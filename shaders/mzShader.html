@@ -16,6 +16,8 @@ attribute vec2 a_position;
   #endif
 
 uniform float time;
+uniform float width;
+uniform float height;
 
 
 void main() {
@@ -45,28 +47,28 @@ void main() {
 	float realX, imagX, powerX;
 
 	pi = 3.1415926538;
-    lXI = 800.0;
-    lXIL = 800.0;
-    lXIR = 800.0;
-    lXQ = 800.0;
-    lXQL = 800.0;
-    lXQR = 800.0;
+    lXI = 1000.0;
+    lXIL = 1000.0;
+    lXIR = 1000.0;
+    lXQ = 1000.0;
+    lXQL = 1000.0;
+    lXQR = 1000.0;
     lambda = 1.535;
-    mu = 8E-8;
-    nu = 7E-3;
+    mu = 1E-7;
+    nu = 1E-2;
 
     VI = -4.0;
-    VIL = -20.0*gl_FragCoord.x / 640.0/2.0;//-3.0;
+    VIL = -20.0*gl_FragCoord.x / width /2.0;//-3.0;
     VIR = -20.0 - VIL;
 
     VQ = -4.0;
-    VQL = -10.0*gl_FragCoord.y / 480.0/2.0 - 10.0 + 5.0*sin(time*0.3);//-3.0;
+    VQL = -10.0*gl_FragCoord.y / height /2.0 - 10.0 + 5.0*sin(time*0.3);//-3.0;
     VQR = -20.0 - VQL;//*480.0/-10.0*gl_FragCoord.y / 480.0;
 
 
-    a = -1.7E-5;
-    b = -1.99E-5;
-    c = -9E-5;
+    a = -1E-5;
+    b = -1E-5;
+    c = -1E-5;
 
     phiXI = 0.0;
     phiXIL = time;
@@ -153,17 +155,20 @@ void main() {
   	var canvas;
 	var buffer;
 	var time;
+	var width;
+	var height;
   	window.onload = init;
  
   	function init() {
  
-
+	width = 640*1.5;
+	height = 480*1.5;
 
 		
 	canvas        = document.getElementById('glscreen');
 	gl            = canvas.getContext('experimental-webgl');
-	canvas.width  = 640*2;
-	canvas.height = 480*2;
+	canvas.width  = width;
+	canvas.height = height;
  
 	gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
  
@@ -225,11 +230,15 @@ void main() {
 	  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 	
 	var locationOfTime = gl.getUniformLocation(program,"time");//gl.getUniformLocation(program "time");
+	var locationOfWidth = gl.getUniformLocation(program,"width");
+	var locationOfHeight = gl.getUniformLocation(program,"height");
+
 	time += 0.03;
 
 	gl.useProgram(program)
 	gl.uniform1f(locationOfTime, time);
-	
+	gl.uniform1f(locationOfWidth,width);
+	gl.uniform1f(locationOfHeight,height);
  	gl.drawArrays(gl.TRIANGLES, 0, 6);
 	
   }
